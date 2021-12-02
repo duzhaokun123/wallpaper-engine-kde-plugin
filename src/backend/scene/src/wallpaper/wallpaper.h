@@ -3,6 +3,7 @@
 #include <vector>
 #include <cstdint>
 #include <functional>
+#include <thread>
 #include "Type.h"
 
 namespace wallpaper
@@ -24,7 +25,7 @@ public:
     void Clear();
 	void SetAssets(const std::string& path);
 	void SetFlip(bool value);
-	void SetMousePos(float x, float y) {m_mousePos = std::vector<float>({x,y});};
+	void SetMousePos(float x, float y) /*{m_mousePos = std::vector<float>({x,y});}*/;
 
 	// call this after loaded
 	void SetDefaultFbo(uint fbo, uint16_t w, uint16_t h);
@@ -61,6 +62,8 @@ private:
 	bool m_loaded {false};
 	int m_framecount {0};
 	std::vector<float> m_mousePos;
+	std::vector<float> m_targetMoussePos;
+	bool m_mousePosUpdateThreadStarted { false };
 
 	float m_aspect;
 	FillMode m_fillMode {FillMode::ASPECTCROP};

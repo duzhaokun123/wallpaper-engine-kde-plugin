@@ -17,6 +17,10 @@
 #include <chrono>
 #include <thread>
 #include <filesystem>
+extern "C" {
+#include <xdo.h>
+}
+
 
 using namespace wallpaper;
 
@@ -227,4 +231,42 @@ void WallpaperGL::SetMuted(bool v) {
 }
 void WallpaperGL::SetVolume(float v) {
 	pImpl->sm.SetVolume(v);
+}
+[[noreturn]] void MousePosUpdateThread(std::vector<float>* mousePos, std::vector<float>* targetMousePos) {
+	// smooth anime when mouse back to desktop
+//	float oldX = (*mousePos)[0];
+//	float oldY = (*mousePos)[1];
+//	while (true) {
+//		float targetX = (*targetMousePos)[0];
+//		float targetY = (*targetMousePos)[1];
+//		if (oldX < targetX) {
+//			oldX += 1;
+//		} else if (oldX > targetX) {
+//			oldX -= 1;
+//		}
+//		if (oldY < targetY) {
+//			oldY += 1;
+//		} else if (oldY > targetY) {
+//			oldY -= 1;
+//		}
+//		*mousePos = std::vector<float>({ oldX, oldY });
+//		std::this_thread::sleep_for(std::chrono::microseconds (100));
+//	}
+	//x11
+	auto xdo = xdo_new(":0");
+	int x = 0;
+	int y = 0;
+	int screen_num = 0;
+	while (true) {
+		xdo_get_mouse_location(xdo, &x, &y, &screen_num);
+		*mousePos = std::vector<float>({ static_cast<float>(x), static_cast<float>(y) });
+		std::this_thread::sleep_for(std::chrono::microseconds (100));
+	}
+}
+void WallpaperGL::SetMousePos(float x, float y) {
+	m_targetMoussePos = std::vector<float>({ x, y });
+	if (! m_mousePosUpdateThreadStarted) {
+		m_mousePosUpdateThreadStarted = true;
+		std::thread(MousePosUpdateThread, &m_mousePos, &m_targetMoussePos).detach();
+	}
 }

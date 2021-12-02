@@ -55,5 +55,6 @@ target_link_libraries(${PROJECT_NAME}
 	${CMAKE_THREAD_LIBS_INIT}
 	${CMAKE_DL_LIBS}
 	glad
+	xdo
 )
 target_include_directories(${PROJECT_NAME} PUBLIC .)
