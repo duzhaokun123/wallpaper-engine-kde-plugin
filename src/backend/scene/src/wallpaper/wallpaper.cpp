@@ -47,11 +47,15 @@ public:
 	fs::VFS vfs;
 };
 
-WallpaperGL::WallpaperGL():m_mousePos({0,0}),m_aspect(16.0f/9.0f),pImpl(std::make_unique<impl>())
+WallpaperGL::WallpaperGL():m_mousePos({0,0}),m_aspect(16.0f/9.0f),pImpl(std::make_unique<impl>()),m_xdo(xdo_new(":0"))
  {}
 
 WallpaperGL::~WallpaperGL() {
 	Clear();
+	if (m_xdo != nullptr) {
+		xdo_free((xdo*)m_xdo);
+		m_xdo = nullptr;
+	}
 }
 
 bool WallpaperGL::Init(void *get_proc_address(const char *)) {
@@ -136,6 +140,12 @@ void WallpaperGL::Render() {
 
 		auto& m_scene = (pImpl->scene);
 		if(m_scene) {
+			if (m_xdo != nullptr) {
+				int x;
+				int y;
+				xdo_get_mouse_location((xdo*)m_xdo, &x, &y, &m_screen_num);
+				m_mousePos = std::vector<float>({ static_cast<float>(x), static_cast<float>(y) });
+			}
 			m_scene->shaderValueUpdater->MouseInput(m_mousePos[0]/pImpl->fboW, m_mousePos[1]/pImpl->fboH);
 			m_scene->shaderValueUpdater->SetTexelSize(1.0f/pImpl->fboW, 1.0f/pImpl->fboH);
 			pImpl->gm.Draw();
@@ -232,41 +242,8 @@ void WallpaperGL::SetMuted(bool v) {
 void WallpaperGL::SetVolume(float v) {
 	pImpl->sm.SetVolume(v);
 }
-[[noreturn]] void MousePosUpdateThread(std::vector<float>* mousePos, std::vector<float>* targetMousePos) {
-	// smooth anime when mouse back to desktop
-//	float oldX = (*mousePos)[0];
-//	float oldY = (*mousePos)[1];
-//	while (true) {
-//		float targetX = (*targetMousePos)[0];
-//		float targetY = (*targetMousePos)[1];
-//		if (oldX < targetX) {
-//			oldX += 1;
-//		} else if (oldX > targetX) {
-//			oldX -= 1;
-//		}
-//		if (oldY < targetY) {
-//			oldY += 1;
-//		} else if (oldY > targetY) {
-//			oldY -= 1;
-//		}
-//		*mousePos = std::vector<float>({ oldX, oldY });
-//		std::this_thread::sleep_for(std::chrono::microseconds (100));
-//	}
-	//x11
-	auto xdo = xdo_new(":0");
-	int x = 0;
-	int y = 0;
-	int screen_num = 0;
-	while (true) {
-		xdo_get_mouse_location(xdo, &x, &y, &screen_num);
-		*mousePos = std::vector<float>({ static_cast<float>(x), static_cast<float>(y) });
-		std::this_thread::sleep_for(std::chrono::microseconds (100));
-	}
-}
 void WallpaperGL::SetMousePos(float x, float y) {
-	m_targetMoussePos = std::vector<float>({ x, y });
-	if (! m_mousePosUpdateThreadStarted) {
-		m_mousePosUpdateThreadStarted = true;
-		std::thread(MousePosUpdateThread, &m_mousePos, &m_targetMoussePos).detach();
+	if (m_xdo == nullptr) {
+		m_mousePos = std::vector<float>({x,y});
 	}
 }

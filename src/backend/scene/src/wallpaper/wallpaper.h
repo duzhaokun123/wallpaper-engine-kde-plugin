@@ -3,8 +3,8 @@
 #include <vector>
 #include <cstdint>
 #include <functional>
-#include <thread>
 #include "Type.h"
+// #include <xdo.h> do NOT include xdo.h here, conflict
 
 namespace wallpaper
 {
@@ -62,7 +62,8 @@ private:
 	bool m_loaded {false};
 	int m_framecount {0};
 	std::vector<float> m_mousePos;
-	std::vector<float> m_targetMoussePos;
+	void* m_xdo; // xdo*
+	int m_screen_num {0}; //useless value
 	bool m_mousePosUpdateThreadStarted { false };
 
 	float m_aspect;
