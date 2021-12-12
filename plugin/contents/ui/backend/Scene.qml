@@ -29,6 +29,9 @@ Item{
         muted: background.mute
         source: background.source
         assets: sceneItem.assets
+        mouseInput: background.mouseInput
+        mouseInputMode: background.mouseInputMode
+        mouseInputScreen: background.mouseInputScreen
         Component.onCompleted: {
             player.setAcceptMouse(true);
             player.setAcceptHover(true);

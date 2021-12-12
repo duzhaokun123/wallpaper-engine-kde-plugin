@@ -103,6 +103,15 @@ public:
 		if(viewer->fps() != m_wgl.Fps()) {
 			m_wgl.SetFps(viewer->fps());
 		}
+		if(viewer->mouseInput() != m_wgl.MouseInput()) {
+			m_wgl.SetMouseInput(viewer->mouseInput());
+		}
+		if(viewer->mouseInputMode() != m_wgl.MouseInputMode()) {
+			m_wgl.SetMouseInputMode(viewer->mouseInputMode());
+		}
+		if(viewer->mouseInputScreen() != m_wgl.MouseInPutScreen()) {
+			m_wgl.SetMouseInputScreen(viewer->mouseInputScreen());
+		}
 
 
 		// load source last
@@ -146,7 +155,9 @@ SceneViewer::SceneViewer(QQuickItem * parent):QQuickFramebufferObject(parent),
 		m_curFps(0),
 		m_fillMode(FillMode::ASPECTCROP),
 		m_volume(1.0f),
-		m_muted(false) {
+		m_muted(false),
+		m_mouseInputMode(1),
+		m_mouseInputScreen(0) {
 }
 
 SceneViewer::~SceneViewer() {
@@ -193,6 +204,9 @@ int SceneViewer::fps() const { return m_fps; }
 int SceneViewer::fillMode() const { return m_fillMode; }
 float SceneViewer::volume() const { return m_volume; }
 bool SceneViewer::muted() const { return m_muted; }
+bool SceneViewer::mouseInput() const { return m_mouseInput; }
+int SceneViewer::mouseInputMode() const { return m_mouseInputMode; }
+int SceneViewer::mouseInputScreen() const { return m_mouseInputScreen; }
 
 void SceneViewer::setSource(const QUrl& source) {
 	if(source == m_source) return;
@@ -234,3 +248,13 @@ void SceneViewer::play() {
 void SceneViewer::pause() {
 	m_paused = true;
 }
+void SceneViewer::setMouseInput(bool b) {
+	m_mouseInput = b;
+}
+void SceneViewer::setMouseInputMode(int i) {
+	m_mouseInputMode = i;
+}
+void SceneViewer::setMouseInputScreen(int i) {
+	m_mouseInputScreen = i;
+}
+

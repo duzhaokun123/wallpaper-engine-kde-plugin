@@ -18,6 +18,10 @@ QtObject {
         Name,
         Modified
     }
+    enum MouseInputMode {
+        Desktop,
+        Fullscreen
+    }
 
     property var filterModel: ListModel {
         ListElement { text: "Favorite";     type:"favor";         key:"favor";         def: 0}

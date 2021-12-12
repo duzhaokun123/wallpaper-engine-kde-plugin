@@ -17,6 +17,9 @@ Rectangle {
     property bool useMpv: wallpaper.configuration.UseMpv
     property bool randomizeWallpaper: wallpaper.configuration.RandomizeWallpaper
     property bool mouseInput: wallpaper.configuration.MouseInput
+    property int mouseInputMode: wallpaper.configuration.MouseInputMode
+    property int mouseInputScreen: if(mouseInput && mouseInputMode == 1){ wallpaper.configuration.MouseInputScreen } else { -1 }
+    property bool mouseInputDesktop: mouseInputMode === 0
 
     property int fps: wallpaper.configuration.Fps
     property int volume: wallpaper.configuration.Volume
@@ -49,7 +52,7 @@ Rectangle {
     }
 
     onMouseInputChanged: {
-        if(this.mouseInput) {
+        if(this.mouseInput && this.mouseInputDesktop) {
             hookTimer.start();
         }
         else if(this.mouseHooker) {

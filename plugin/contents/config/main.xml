@@ -78,5 +78,13 @@
       <label>CustomConf</label>
       <default></default>
     </entry>
+    <entry name="MouseInputMode" type="Int">
+      <label>mouse input mode</label>
+      <default>1</default>
+    </entry>
+    <entry name="MouseInputScreen" type="Int">
+      <label>mouse input screen</label>
+      <default>0</default>
+    </entry>
   </group>
 </kcfg>

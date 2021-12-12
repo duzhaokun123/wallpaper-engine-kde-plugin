@@ -27,6 +27,8 @@ ColumnLayout {
     property int  cfg_DisplayMode
     property int  cfg_PauseMode
     property int  cfg_SortMode
+    property int  cfg_MouseInputMode
+    property alias cfg_MouseInputScreen: mouseInputScreen.value
     property alias cfg_Volume: sliderVol.value
     property alias cfg_FilterMode: comboxFilter.currentIndex
 
@@ -503,10 +505,50 @@ ColumnLayout {
                     Label { text: " min" }
                 }
             }
-            CheckBox {
-                id: mouseInput
-                visible: libcheck.wallpaper
+            RowLayout {
+                spacing: 0
                 Kirigami.FormData.label: "Mouse input:"
+                CheckBox {
+                    id: mouseInput
+                    visible: libcheck.wallpaper
+                }
+                RowLayout {
+                    enabled: cfg_MouseInput
+                    Label {
+                        text: " from "
+                    }
+                    ComboBox {
+                        id: mouseInputMode
+                        implicitWidth: themeWidth * 10
+                        model: [
+                            {
+                                text: "Desktop",
+                                value: Common.MouseInputMode.Desktop
+                            },
+                            {
+                                text: "Fullscreen  (x11 only)",
+                                value: Common.MouseInputMode.Fullscreen
+                            },
+                        ]
+                        textRole: "text"
+                        onActivated: cfg_MouseInputMode = Common.cbCurrentValue(mouseInputMode)
+                        Component.onCompleted: currentIndex = Common.cbIndexOfValue(mouseInputMode, cfg_MouseInputMode)
+                    }
+                    RowLayout {
+                        visible: cfg_MouseInputMode === Common.MouseInputMode.Fullscreen
+                        Label {
+                            text: " at "
+                        }
+                        SpinBox {
+                            id: mouseInputScreen
+                            width: font.pixelSize
+                            height: heightpicker.height
+                            from: 0
+                            to: 120
+                            stepSize: 1
+                        }
+                    }
+                }
             }
             CheckBox{
                 visible: libcheck.wallpaper

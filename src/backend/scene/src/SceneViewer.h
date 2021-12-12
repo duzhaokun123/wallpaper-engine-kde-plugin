@@ -21,6 +21,9 @@ class SceneViewer : public QQuickFramebufferObject
 	Q_PROPERTY(int fillMode READ fillMode WRITE setFillMode NOTIFY fillModeChanged)
 	Q_PROPERTY(float volume READ volume WRITE setVolume NOTIFY volumeChanged)
 	Q_PROPERTY(bool muted READ muted WRITE setMuted)
+	Q_PROPERTY(bool mouseInput READ mouseInput WRITE setMouseInput)
+	Q_PROPERTY(int mouseInputMode READ mouseInputMode WRITE setMouseInputMode)
+	Q_PROPERTY(int mouseInputScreen READ mouseInputScreen WRITE setMouseInputScreen)
 
     friend class SceneRenderer;
 public:
@@ -43,6 +46,9 @@ public:
 	int fillMode() const;
 	float volume() const;
 	bool muted() const;
+	bool mouseInput() const;
+	int mouseInputMode() const;
+	int mouseInputScreen() const;
 
 	void setSource(const QUrl& source);
 	void setAssets(const QUrl& assets);
@@ -50,6 +56,9 @@ public:
 	void setFillMode(int);
 	void setVolume(float);
 	void setMuted(bool);
+	void setMouseInput(bool);
+	void setMouseInputMode(int);
+	void setMouseInputScreen(int);
 
 	Q_INVOKABLE void setAcceptMouse(bool);
 	Q_INVOKABLE void setAcceptHover(bool);
@@ -81,4 +90,7 @@ private:
 	int m_fillMode;
 	float m_volume;
 	bool m_muted;
+	bool m_mouseInput;
+	int m_mouseInputMode;
+	int m_mouseInputScreen;
 };

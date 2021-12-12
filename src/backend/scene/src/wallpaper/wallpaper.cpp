@@ -47,7 +47,7 @@ public:
 	fs::VFS vfs;
 };
 
-WallpaperGL::WallpaperGL():m_mousePos({0,0}),m_aspect(16.0f/9.0f),pImpl(std::make_unique<impl>()),m_xdo(xdo_new(":0"))
+WallpaperGL::WallpaperGL():m_mousePos({0,0}),m_aspect(16.0f/9.0f),pImpl(std::make_unique<impl>())
  {}
 
 WallpaperGL::~WallpaperGL() {
@@ -140,7 +140,7 @@ void WallpaperGL::Render() {
 
 		auto& m_scene = (pImpl->scene);
 		if(m_scene) {
-			if (m_xdo != nullptr) {
+			if (m_mouseInput && m_xdo != nullptr) {
 				int x;
 				int y;
 				xdo_get_mouse_location((xdo*)m_xdo, &x, &y, &m_screen_num);
@@ -243,7 +243,22 @@ void WallpaperGL::SetVolume(float v) {
 	pImpl->sm.SetVolume(v);
 }
 void WallpaperGL::SetMousePos(float x, float y) {
-	if (m_xdo == nullptr) {
+	if (m_mouseInput && (m_mouseInputMode == 0 || m_xdo == nullptr)) {
 		m_mousePos = std::vector<float>({x,y});
 	}
+}
+int WallpaperGL::MouseInPutScreen() const {
+	int re = m_mouseInputScreen;
+	if (m_xdo == nullptr) {
+		re = -1;
+	}
+	return re;
+}
+void WallpaperGL::SetMouseInputScreen(int i) {
+	m_mouseInputScreen = i;
+	if (m_xdo != nullptr) {
+		xdo_free((xdo*)m_xdo);
+		m_xdo = nullptr;
+	}
+	m_xdo = xdo_new((":" + std::to_string(i)).c_str());
 }

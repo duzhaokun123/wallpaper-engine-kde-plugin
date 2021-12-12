@@ -9,7 +9,8 @@ A wallpaper plugin integrating [wallpaper engine](https://store.steampowered.com
 - Support **scene(2d)**,**video**,**web** wallpaper types
 - Requires *Wallpaper Engine* installed on steam
 - Requires [CMake 3.16+](#dependencies)
-- Requires [qt 5.13+](#dependencies) for playing video(no mpv), or [mpv](#dependencies) instead  
+- Requires [qt 5.13+](#dependencies) for playing video(no mpv), or [mpv](#dependencies) instead
+- Requires [xdo](#dependencies) for fullscreen mouse locate 
 
 ## Install
 #### Dependencies
@@ -19,7 +20,7 @@ sudo apt install git cmake extra-cmake-modules gstreamer1.0-libav \
 libkf5package-dev libkf5plasma-dev \
 liblz4-dev libmpv-dev python3-websockets \
 qtbase5-dev qtbase5-private-dev qtdeclarative5-dev libqt5x11extras5-dev \
-qml-module-qt-labs-folderlistmodel qml-module-qtwebchannel qml-module-qtwebsockets
+qml-module-qt-labs-folderlistmodel qml-module-qtwebchannel qml-module-qtwebsockets libxdo-dev
 ```  
 
 Fedora:  
@@ -29,13 +30,13 @@ sudo dnf install git cmake extra-cmake-modules gstreamer1-libav \
 kf5-kpackage-devel kf5-plasma-devel \
 lz4-devel mpv-libs-devel python3-websockets \
 qt5-qtbase-devel qt5-qtbase-private-devel qt5-qtdeclarative-devel qt5-qtx11extras-devel \
-qt5-qtwebchannel-devel qt5-qtwebsockets-devel 
+qt5-qtwebchannel-devel qt5-qtwebsockets-devel libxdo-devel
 ```
 
 Arch:  
 ```sh
 sudo pacman -S git cmake extra-cmake-modules plasma-framework gst-libav \
-base-devel mpv python-websockets qt5-declarative qt5-websockets qt5-webchannel
+base-devel mpv python-websockets qt5-declarative qt5-websockets qt5-webchannel xdotool
 ```
 #### Build and Install
 ```sh
