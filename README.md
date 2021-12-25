@@ -58,7 +58,7 @@ sudo make install
 ```
 #### Uninstall
 1. remove files that list in wallpaper-engine-kde-plugin/build/install_manifest.txt
-2. `plasmapkg2 -r ~/.local/share/plasma/wallpapers/com.github.catsout.wallpaperEngineKde`
+2. `plasmapkg2 -r ~/.local/share/plasma/wallpapers/com.github.casout.wallpaperEngineKde`
 
 ## Usage
 1. *Wallpaper Engine* installed on Steam
